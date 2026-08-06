@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout — Nexora Labs</title>
+<meta name="description" content="Review your Nexora Labs order and pay a 50% advance to lock in your build slot.">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .checkout-layout{ display:grid; grid-template-columns:1.3fr .9fr; gap:36px; align-items:start; }
+  .order-line{ display:flex; justify-content:space-between; align-items:center; padding:14px 0; border-bottom:1px solid var(--line); }
+  .order-line-title{ font-size:14px; }
+  .order-line-kind{ font-size:11.5px; color:var(--white-faint); font-family:var(--font-mono); margin-top:2px; }
+  .order-line-price{ font-family:var(--font-mono); font-size:14px; }
+  .sum-row{ display:flex; justify-content:space-between; font-size:14px; padding:7px 0; color:var(--white-dim); }
+  .sum-row span:last-child{ font-family:var(--font-mono); color:var(--white); }
+  .advance-box{
+    margin-top:18px; padding:20px; border-radius:var(--radius); text-align:center;
+    background:linear-gradient(160deg, var(--pink-dim), transparent 70%), var(--black-soft);
+    border:1px solid rgba(255,79,163,.35);
+  }
+  .advance-box .label{ font-family:var(--font-mono); font-size:11.5px; color:var(--white-faint); letter-spacing:.05em; text-transform:uppercase; }
+  .advance-box .amount{ font-family:var(--font-mono); font-size:32px; font-weight:600; color:var(--pink); margin-top:6px; }
+  .advance-box .note{ font-size:12.5px; margin-top:8px; }
+  #success-banner{ display:none; margin-bottom:24px; padding:16px 18px; border-radius:var(--radius-sm); background:var(--blue-dim); border:1px solid rgba(47,111,240,.4); color:#a9c4ff; font-family:var(--font-mono); font-size:13.5px; }
+  #success-banner.show{ display:block; }
+  @media (max-width:900px){ .checkout-layout{ grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="brand"><span class="brand-mark"></span>Nexora <small>LABS</small></a>
+    <ul class="nav-links">
+      <li><a href="index.html" data-nav="index.html">Home</a></li>
+      <li><a href="portfolio.html" data-nav="portfolio.html">Portfolio</a></li>
+      <li><a href="builder.html" data-nav="builder.html">AI Builder</a></li>
+      <li><a href="checkout.html" data-nav="checkout.html" class="active">Checkout</a></li>
+      <li data-auth-slot><a href="login.html" class="btn btn-outline btn-sm">Log in</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="checkout.html" class="cart-btn" aria-label="View cart">🧪<span class="cart-count" data-cart-count style="display:none;">0</span></a>
+      <button class="nav-toggle btn btn-outline btn-sm" aria-label="Menu" aria-expanded="false">Menu</button>
+    </div>
+  </div>
+</nav>
+
+<main class="page-fade">
+  <header class="hero" style="padding-bottom:40px;">
+    <div class="orb" aria-hidden="true" style="opacity:.18;"></div>
+    <div class="container">
+      <div class="eyebrow">CHECKOUT</div>
+      <h1 style="font-size:clamp(32px,5vw,50px); margin-top:16px;">Lock in your build slot.</h1>
+      <p class="lede" style="margin-top:16px;">Pay 50% now to confirm your order — settle the rest when your site is delivered, just like a standard shopping-app checkout.</p>
+    </div>
+  </header>
+
+  <section class="section" style="padding-top:0;">
+    <div class="container">
+
+      <div id="success-banner">✓ Advance payment received — we'll be in touch by email to kick off your build. Your cart has been cleared.</div>
+
+      <!-- Empty state -->
+      <div class="card" id="checkout-empty" style="text-align:center; padding:60px 30px;">
+        <h3>Your cart is empty</h3>
+        <p style="margin-top:10px;">Head to the AI builder to choose a site type and features first.</p>
+        <a href="builder.html" class="btn btn-grad" style="margin-top:22px;">Open the AI Builder →</a>
+      </div>
+
+      <!-- Filled state -->
+      <div class="checkout-layout" id="checkout-filled" style="display:none;">
+        <div>
+          <div class="card">
+            <div class="eyebrow">YOUR ORDER</div>
+            <div id="order-lines" style="margin-top:14px;"></div>
+            <div class="sum-row" style="margin-top:14px;"><span>Site type</span><span id="sum-site">₹0</span></div>
+            <div class="sum-row"><span>Add-on features</span><span id="sum-features">₹0</span></div>
+            <div class="sum-row" style="border-top:1px solid var(--line); margin-top:6px; padding-top:14px; font-size:16px;"><span>Total</span><span id="sum-subtotal">₹0</span></div>
+            <div class="sum-row"><span>Advance due now (50%)</span><span id="sum-advance">₹0</span></div>
+            <div class="sum-row"><span>Balance on delivery</span><span id="sum-balance">₹0</span></div>
+          </div>
+
+          <div class="card" style="margin-top:20px;">
+            <div class="eyebrow">YOUR DETAILS</div>
+            <div style="margin-top:16px;">
+              <div class="field"><label for="order-name">Full name</label><input type="text" id="order-name" required></div>
+              <div class="field"><label for="order-email">Email</label><input type="email" id="order-email" required></div>
+              <div class="field"><label for="order-phone">Phone</label><input type="tel" id="order-phone" required></div>
+              <div class="field"><label for="order-notes">Notes (optional)</label><textarea id="order-notes" rows="3" placeholder="Anything we should know about your project?"></textarea></div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="card" style="position:sticky; top:100px;">
+          <div class="eyebrow">PAY TO CONFIRM</div>
+          <div class="advance-box">
+            <div class="label">Due now — 50% advance</div>
+            <div class="amount" id="advance-big">₹0</div>
+            <div class="note">Remaining balance is due when your site is delivered.</div>
+          </div>
+          <div class="form-msg" id="pay-msg" style="margin-top:16px;"></div>
+          <button class="btn btn-grad btn-block" id="pay-btn" style="margin-top:16px;">Pay 50% advance</button>
+          <p style="margin-top:14px; font-size:12px; text-align:center;">Secured checkout via Razorpay · UPI, cards & net-banking</p>
+        </aside>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom" style="border-top:none; padding-top:0; margin-top:0;">
+      <span>© <span id="year"></span> Nexora Labs. All rights reserved.</span>
+      <span>Built in the lab.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<!-- Razorpay checkout -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/checkout.js"></script>
+<script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
