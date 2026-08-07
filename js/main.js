@@ -19,9 +19,26 @@
   const toggle = document.querySelector('.nav-toggle');
   const links = document.querySelector('.nav-links');
   if(toggle && links){
-    toggle.addEventListener('click', () => {
+    const closeMenu = () => {
+      links.classList.remove('open-mobile');
+      toggle.setAttribute('aria-expanded', 'false');
+    };
+    toggle.addEventListener('click', (e) => {
+      e.stopPropagation();
       const open = links.classList.toggle('open-mobile');
       toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    // Close after tapping a nav link
+    links.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+    // Close if tapping outside the menu
+    document.addEventListener('click', (e) => {
+      if(links.classList.contains('open-mobile') && !links.contains(e.target) && e.target !== toggle){
+        closeMenu();
+      }
+    });
+    // Close if the window is resized back to desktop width
+    window.addEventListener('resize', () => {
+      if(window.innerWidth > 900) closeMenu();
     });
   }
 

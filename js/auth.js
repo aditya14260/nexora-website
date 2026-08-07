@@ -47,7 +47,7 @@
 
   function redirectAfterAuth(){
     const params = new URLSearchParams(location.search);
-    const next = params.get('next') || 'checkout.html';
+    const next = params.get('next') || 'builder.html';
     location.href = next;
   }
 
