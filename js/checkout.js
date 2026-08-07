@@ -135,7 +135,7 @@
 
     try{
       // Server-side order creation (amount is in paise for Razorpay).
-      const res = await fetch('http://localhost:3000/api/create-order', {
+      const res = await fetch('https://nexora-backend-mo7t.onrender.com/api/create-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ amount: totals.advance * 100, currency: 'INR' })
