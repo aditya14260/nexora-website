@@ -41,6 +41,16 @@
     { id:'maintenance', name:'1-Year Maintenance & Support',   price:4999, blurb:'Updates, backups and priority support for 12 months.' },
   ];
 
+  // Icon glyphs per catalog id — used to render icon badges on cards
+  // across builder.html, pricing.html, and checkout summaries.
+  const ICONS = {
+    business:'💼', ecommerce:'🛒', restaurant:'🍽️', realestate:'🏠',
+    education:'🎓', saas:'⚡', blog:'✍️', event:'🎉',
+    domain:'🌐', seo:'📈', dashboard:'🗂️', payments:'💳', chat:'💬',
+    cms:'📝', i18n:'🌍', newsletter:'📧', aichat:'🤖', analytics:'📊',
+    booking:'📅', social:'🔗', speed:'🚀', maintenance:'🛠️'
+  };
+
   function formatINR(n){
     return '₹' + Math.round(n).toLocaleString('en-IN');
   }
@@ -142,7 +152,7 @@
   }
 
   window.NexoraCart = {
-    SITE_TYPES, FEATURES, ADVANCE_RATIO,
+    SITE_TYPES, FEATURES, ADVANCE_RATIO, ICONS,
     formatINR,
     setSiteType, toggleFeature, setMeta, clear,
     getItemCount, getSiteType, getFeatures, getTotals,

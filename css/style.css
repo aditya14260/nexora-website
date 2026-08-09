@@ -309,6 +309,17 @@ p{ line-height:1.65; color:var(--white-dim); margin:0; }
 .tag.blue{ border-color:rgba(47,111,240,.4); color:var(--blue); background:var(--blue-dim); }
 .tag.pink{ border-color:rgba(255,79,163,.4); color:var(--pink); background:var(--pink-dim); }
 
+/* ---------- icon badges ---------- */
+.icon-badge{
+  width:44px; height:44px; flex:none;
+  border-radius:12px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:20px;
+  background:linear-gradient(155deg, var(--pink-dim), var(--blue-dim));
+  border:1px solid var(--line-strong);
+}
+.icon-badge.lg{ width:56px; height:56px; font-size:26px; border-radius:14px; }
+
 /* ---------- footer ---------- */
 .footer{
   border-top:1px solid var(--line);

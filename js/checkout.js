@@ -17,7 +17,7 @@
 
 (function(){
   const cart = window.NexoraCart;
-  const RAZORPAY_KEY_ID = 'rzp_test_TMBGBtVNRxHSAO'; // public key only — safe on the client
+  const RAZORPAY_KEY_ID = 'rzp_live_TNYttow3A9nVLs'; // public key only — safe on the client
 
   const els = {
     empty: document.getElementById('checkout-empty'),
