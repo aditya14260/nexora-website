@@ -243,25 +243,25 @@
       if(!state.features.includes(fid)) cart.toggleFeature(fid);
     });
 
-    resultBox.classList.add('show');
+       resultBox.classList.add('show');
     resultBox.innerHTML = `
-      Suggested site type: <strong style="color:var(--pink);">${type.name}</strong><br>
+      Suggested site type: <strong style="color:var(--pink-text);">${type.name}</strong><br>
       Suggested features: ${feats.map(f => `<span class="advisor-chip">${f.name}</span>`).join('')}
       <div style="margin-top:12px; color:var(--white-faint);">Added to your cart — adjust anything in the next steps.</div>
     `;
-    renderTypeGrid();
-    renderFeatureGrid();
+    syncSelectionStates();
     setTimeout(() => goto(2), 900);
   }
 
-  // ---- Site type grid ----
+    // ---- Site type grid (built once, then just re-styled on updates) ----
   const typeGrid = document.getElementById('type-grid');
   function renderTypeGrid(){
     const state = cart.getState();
-    typeGrid.innerHTML = '';
+    const fragment = document.createDocumentFragment();
     cart.SITE_TYPES.forEach(t => {
       const el = document.createElement('div');
       el.className = 'card pick-card' + (state.siteType === t.id ? ' selected' : '');
+      el.dataset.typeId = t.id;
       el.innerHTML = `
         <div class="pick-card-top">
           <div style="display:flex; align-items:center; gap:12px;">
@@ -273,22 +273,22 @@
         <p style="margin-top:14px;">${t.blurb}</p>
         <div class="pick-price" style="margin-top:14px;">${cart.formatINR(t.price)}</div>
       `;
-      el.addEventListener('click', () => {
-        cart.setSiteType(t.id);
-        renderTypeGrid();
-      });
-      typeGrid.appendChild(el);
+      el.addEventListener('click', () => cart.setSiteType(t.id));
+      fragment.appendChild(el);
     });
+    typeGrid.innerHTML = '';
+    typeGrid.appendChild(fragment);
   }
 
-  // ---- Feature grid ----
+  // ---- Feature grid (built once, then just re-styled on updates) ----
   const featureGrid = document.getElementById('feature-grid');
   function renderFeatureGrid(){
     const state = cart.getState();
-    featureGrid.innerHTML = '';
+    const fragment = document.createDocumentFragment();
     cart.FEATURES.forEach(f => {
       const el = document.createElement('div');
       el.className = 'card pick-card' + (state.features.includes(f.id) ? ' selected' : '');
+      el.dataset.featureId = f.id;
       el.innerHTML = `
         <div class="pick-card-top">
           <div style="display:flex; align-items:center; gap:12px;">
@@ -300,11 +300,21 @@
         <p style="margin-top:10px;">${f.blurb}</p>
         <div class="pick-price" style="margin-top:14px;">+${cart.formatINR(f.price)}</div>
       `;
-      el.addEventListener('click', () => {
-        cart.toggleFeature(f.id);
-        renderFeatureGrid();
-      });
-      featureGrid.appendChild(el);
+      el.addEventListener('click', () => cart.toggleFeature(f.id));
+      fragment.appendChild(el);
+    });
+    featureGrid.innerHTML = '';
+    featureGrid.appendChild(fragment);
+  }
+
+  // ---- Keep card highlights in sync WITHOUT rebuilding all 66 cards ----
+  function syncSelectionStates(){
+    const state = cart.getState();
+    typeGrid.querySelectorAll('[data-type-id]').forEach(el => {
+      el.classList.toggle('selected', state.siteType === el.dataset.typeId);
+    });
+    featureGrid.querySelectorAll('[data-feature-id]').forEach(el => {
+      el.classList.toggle('selected', state.features.includes(el.dataset.featureId));
     });
   }
 
@@ -343,13 +353,14 @@
     document.getElementById('summary-advance').textContent = cart.formatINR(totals.advance);
   }
 
-  function renderAll(){
-    renderTypeGrid();
-    renderFeatureGrid();
+    function renderAll(){
     renderReview();
     renderSummary();
+    syncSelectionStates();
   }
   document.addEventListener('nexora:cart-updated', renderAll);
+  renderTypeGrid();
+  renderFeatureGrid();
   renderAll();
 
   document.getElementById('year').textContent = new Date().getFullYear();

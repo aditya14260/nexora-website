@@ -140,7 +140,8 @@
 <script>
   const cart = window.NexoraCart;
 
-  const typeGrid = document.getElementById('type-price-grid');
+    const typeGrid = document.getElementById('type-price-grid');
+  const typeFragment = document.createDocumentFragment();
   cart.SITE_TYPES.forEach(t => {
     const el = document.createElement('div');
     el.className = 'card price-card';
@@ -154,10 +155,12 @@
       </div>
       <p style="margin-top:14px;">${t.blurb}</p>
     `;
-    typeGrid.appendChild(el);
+    typeFragment.appendChild(el);
   });
+  typeGrid.appendChild(typeFragment);
 
   const featureGrid = document.getElementById('feature-price-grid');
+  const featureFragment = document.createDocumentFragment();
   cart.FEATURES.forEach(f => {
     const el = document.createElement('div');
     el.className = 'card price-card';
@@ -171,8 +174,9 @@
       </div>
       <p style="margin-top:10px;">${f.blurb}</p>
     `;
-    featureGrid.appendChild(el);
+    featureFragment.appendChild(el);
   });
+  featureGrid.appendChild(featureFragment);
 
   document.getElementById('year').textContent = new Date().getFullYear();
 </script>
