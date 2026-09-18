@@ -10,8 +10,7 @@
 (function(window){
 
   const STORAGE_KEY = 'nexora_cart_v1';
-  const ADVANCE_RATIO = 0.5; // client pays 50% up front, like a shopping-app deposit
-
+    const ADVANCE_RATIO = 0.2; // client pays 20% up front, like a shopping-app deposit
   // ---------------- Catalog ----------------
   const SITE_TYPES = [
     { id:'business',       name:'Business / Portfolio',       price:15999, blurb:'A sharp, credible presence for a company, freelancer or studio.', tag:'red' },

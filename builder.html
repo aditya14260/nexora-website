@@ -153,7 +153,7 @@
             <div class="section-head" style="margin-bottom:24px;">
               <div class="eyebrow">STEP 4</div>
               <h3 style="margin-top:10px;">Review your order</h3>
-              <p style="margin-top:8px;">Everything looks good? Head to checkout to pay your 50% advance and lock in your build slot.</p>
+              <p style="margin-top:8px;">Everything looks good? Head to checkout to pay your 20% advance and lock in your build slot.</p>
             </div>
             <div class="card" id="review-card"></div>
             <div class="step-nav">
@@ -168,7 +168,7 @@
           <div class="eyebrow">LIVE QUOTE</div>
           <div id="summary-lines" style="margin-top:16px;"></div>
           <div class="summary-total"><span>Total</span><span id="summary-total">₹0</span></div>
-          <p style="margin-top:10px; font-size:12.5px;">50% advance to start: <strong id="summary-advance" style="color:var(--pink); font-family:var(--font-mono);">₹0</strong></p>
+          <p style="margin-top:10px; font-size:12.5px;">20% advance to start: <strong id="summary-advance" style="color:var(--pink); font-family:var(--font-mono);">₹0</strong></p>
           <a href="checkout.html" class="btn btn-grad btn-block" style="margin-top:18px;">Go to checkout →</a>
         </aside>
       </div>
@@ -332,7 +332,7 @@
       ${site ? `<div class="summary-line"><span>${site.name} (site type)</span><span>${cart.formatINR(site.price)}</span></div>` : `<div class="summary-line"><span>No site type chosen</span><span>—</span></div>`}
       ${feats.map(f => `<div class="summary-line"><span>${f.name}</span><span>${cart.formatINR(f.price)}</span></div>`).join('')}
       <div class="summary-total"><span>Total</span><span>${cart.formatINR(totals.subtotal)}</span></div>
-      <p style="margin-top:10px;">50% advance due now: <strong style="color:var(--pink); font-family:var(--font-mono);">${cart.formatINR(totals.advance)}</strong> · balance on delivery: <strong style="font-family:var(--font-mono);">${cart.formatINR(totals.balance)}</strong></p>
+      <p style="margin-top:10px;">20% advance due now: <strong style="color:var(--pink); font-family:var(--font-mono);">${cart.formatINR(totals.advance)}</strong> · balance on delivery: <strong style="font-family:var(--font-mono);">${cart.formatINR(totals.balance)}</strong></p>
     `;
   }
 

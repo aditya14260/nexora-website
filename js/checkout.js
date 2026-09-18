@@ -1,6 +1,6 @@
 /* ============================================================
    NEXORA LABS — checkout.js
-   Renders the cart summary, computes the 50% advance (like a
+   Renders the cart summary, computes the 20% advance (like a
    shopping-app deposit), and kicks off a Razorpay payment for
    the advance amount only. Requires firebase-config.js and
    cart.js to run first.
@@ -148,7 +148,7 @@
         amount: order.amount,
         currency: order.currency,
         name: 'Nexora Labs',
-        description: '50% advance payment for your website order',
+        description: '20% advance payment for your website order',
         order_id: order.id,
         prefill: {
           name: els.nameField.value.trim(),
@@ -163,7 +163,7 @@
         modal: {
           ondismiss: function(){
             els.payBtn.disabled = false;
-            els.payBtn.textContent = `Pay 50% advance — ${cart.formatINR(totals.advance)}`;
+            els.payBtn.textContent = `Pay 20% advance — ${cart.formatINR(totals.advance)}`;
           }
         }
       };
