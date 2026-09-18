@@ -129,11 +129,10 @@
 
   // ---- Reflect auth state in nav (email or "Login") ----
   auth.onAuthStateChanged((user) => {
-    document.querySelectorAll('[data-auth-slot]').forEach(slot => {
+       document.querySelectorAll('[data-auth-slot]').forEach(slot => {
       if(user){
         const first = (user.displayName || user.email || 'Account').split(' ')[0];
-        slot.innerHTML = `<span class="tag blue" title="${user.email || ''}">● ${first}</span> <button data-logout class="btn btn-outline btn-sm" style="margin-left:8px;">Log out</button>`;
-        slot.querySelectorAll('[data-logout]').forEach(btn => btn.addEventListener('click', async () => { await auth.signOut(); location.href = 'login.html'; }));
+        slot.innerHTML = `<a href="account.html" class="tag blue" title="${user.email || ''}">👤 ${first}</a>`;
       } else {
         slot.innerHTML = `<a href="login.html" class="btn btn-outline btn-sm">Log in</a>`;
       }

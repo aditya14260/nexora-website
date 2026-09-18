@@ -178,6 +178,12 @@
   });
   featureGrid.appendChild(featureFragment);
 
+   // Show the grids immediately once populated — they were empty (zero height)
+  // when the page's scroll-reveal watcher first checked them, so relying on
+  // that watcher left them stuck invisible on some mobile browsers.
+  typeGrid.classList.add('in');
+  featureGrid.classList.add('in');
+
   document.getElementById('year').textContent = new Date().getFullYear();
 </script>
 </body>

@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Account — Nexora Labs</title>
+<meta name="description" content="Manage your Nexora Labs profile and view your order history.">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .account-layout{ display:grid; grid-template-columns:280px 1fr; gap:28px; align-items:start; }
+  .account-side{ position:sticky; top:100px; }
+  .avatar-circle{
+    width:64px; height:64px; border-radius:50%;
+    background:var(--grad-signature);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-display); font-size:24px; font-weight:700; color:var(--black);
+  }
+  .account-nav a{
+    display:flex; align-items:center; gap:10px;
+    padding:11px 12px; border-radius:var(--radius-sm);
+    font-size:14px; color:var(--white-dim); margin-top:4px;
+    transition:background .25s var(--ease), color .25s var(--ease);
+  }
+  .account-nav a:hover, .account-nav a.active{ background:var(--pink-dim); color:var(--pink-text); }
+  .order-row{
+    display:flex; justify-content:space-between; align-items:center; gap:16px;
+    padding:18px 0; border-bottom:1px solid var(--line);
+  }
+  .order-row:last-child{ border-bottom:none; }
+  .order-meta{ font-size:12.5px; color:var(--white-faint); font-family:var(--font-mono); margin-top:4px; }
+  .order-status{
+    font-family:var(--font-mono); font-size:11px; padding:5px 10px; border-radius:999px;
+    text-transform:uppercase; letter-spacing:.04em; white-space:nowrap;
+  }
+  .order-status.paid{ background:var(--blue-dim); color:#12432e; }
+  .order-status.pending{ background:var(--pink-dim); color:var(--pink-text); }
+  .field-static{ font-size:15px; padding:12px 0; border-bottom:1px solid var(--line); }
+  .field-static .label{ font-family:var(--font-mono); font-size:11.5px; color:var(--white-faint); text-transform:uppercase; letter-spacing:.05em; display:block; margin-bottom:4px; }
+  @media (max-width:800px){ .account-layout{ grid-template-columns:1fr; } .account-side{ position:static; } }
+</style>
+</head>
+<body>
+<div id="auth-veil">Checking your session…</div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="brand"><span class="brand-mark"></span>Nexora <small>LABS</small></a>
+    <ul class="nav-links">
+      <li><a href="index.html" data-nav="index.html">Home</a></li>
+      <li><a href="pricing.html" data-nav="pricing.html">Pricing</a></li>
+      <li><a href="builder.html" data-nav="builder.html">AI Builder</a></li>
+      <li><a href="checkout.html" data-nav="checkout.html">Checkout</a></li>
+      <li data-auth-slot><a href="login.html" class="btn btn-outline btn-sm">Log in</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="checkout.html" class="cart-btn" aria-label="View cart">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8h12l-1 12.5a1 1 0 0 1-1 .5H8a1 1 0 0 1-1-.5L6 8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg>
+        <span class="cart-count" data-cart-count style="display:none;">0</span>
+      </a>
+      <button class="nav-toggle btn btn-outline btn-sm" aria-label="Menu" aria-expanded="false">Menu</button>
+    </div>
+  </div>
+</nav>
+
+<main class="page-fade">
+  <header class="hero" style="padding-bottom:30px;">
+    <div class="container">
+      <div class="eyebrow">MY ACCOUNT</div>
+      <h1 style="font-size:clamp(30px,4.5vw,44px); margin-top:16px;" id="welcome-heading">Welcome back.</h1>
+    </div>
+  </header>
+
+  <section class="section" style="padding-top:0;">
+    <div class="container">
+      <div class="account-layout">
+
+        <!-- Side nav -->
+        <aside class="card account-side">
+          <div style="display:flex; align-items:center; gap:14px;">
+            <div class="avatar-circle" id="avatar-initial">•</div>
+            <div>
+              <div style="font-weight:600;" id="side-name">—</div>
+              <div style="font-size:12.5px; color:var(--white-faint);" id="side-email">—</div>
+            </div>
+          </div>
+          <nav class="account-nav" style="margin-top:20px;">
+            <a href="#profile" class="active" data-tab-link="profile">👤 Profile</a>
+            <a href="#orders" data-tab-link="orders">🧾 My Orders</a>
+            <a href="#security" data-tab-link="security">🔒 Security</a>
+            <a href="builder.html">➕ Start a new order</a>
+          </nav>
+          <button class="btn btn-outline btn-block" id="logout-btn" style="margin-top:20px;">Log out</button>
+        </aside>
+
+        <!-- Content panels -->
+        <div>
+          <!-- Profile panel -->
+          <div class="card" id="panel-profile" data-panel="profile">
+            <div class="eyebrow">PROFILE</div>
+            <h3 style="margin-top:12px;">Your details</h3>
+
+            <div class="form-msg" id="profile-msg"></div>
+
+            <div class="field-static">
+              <span class="label">Full name</span>
+              <span id="display-name">—</span>
+            </div>
+            <div class="field-static">
+              <span class="label">Email</span>
+              <span id="display-email">—</span>
+            </div>
+            <div class="field-static">
+              <span class="label">Member since</span>
+              <span id="display-since">—</span>
+            </div>
+
+            <form id="form-edit-name" style="margin-top:20px;">
+              <div class="field">
+                <label for="edit-name">Update your name</label>
+                <input type="text" id="edit-name" required>
+              </div>
+              <button type="submit" class="btn btn-grad btn-sm">Save changes</button>
+            </form>
+          </div>
+
+          <!-- Orders panel -->
+          <div class="card" id="panel-orders" data-panel="orders" style="display:none;">
+            <div class="eyebrow">MY ORDERS</div>
+            <h3 style="margin-top:12px;">Order history</h3>
+            <div id="orders-list" style="margin-top:10px;">
+              <p style="padding:20px 0;">Loading your orders…</p>
+            </div>
+          </div>
+
+          <!-- Security panel -->
+          <div class="card" id="panel-security" data-panel="security" style="display:none;">
+            <div class="eyebrow">SECURITY</div>
+            <h3 style="margin-top:12px;">Password</h3>
+            <p style="margin-top:8px;">We'll email you a secure link to set a new password.</p>
+            <div class="form-msg" id="security-msg"></div>
+            <button class="btn btn-outline" id="reset-password-btn" style="margin-top:14px;">Send password reset email</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a href="index.html" class="brand"><span class="brand-mark"></span>Nexora <small>LABS</small></a>
+        <p style="margin-top:14px; max-width:260px;">A small web studio that treats every site like a considered experiment.</p>
+      </div>
+      <div>
+        <h4>Navigate</h4>
+        <a href="index.html">Home</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="builder.html">AI Builder</a>
+        <a href="checkout.html">Checkout</a>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="terms.html">Terms & Conditions</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="refund.html">Refund & Cancellation</a>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <a href="mailto:hello@nexoralabs.dev">hello@nexoralabs.dev</a>
+        <a href="tel:+910000000000">+91 00000 00000</a>
+        <a href="contact.html">Jaipur, Rajasthan, IN</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> Nexora Labs. All rights reserved.</span>
+      <span>Built in the lab.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Firebase SDKs (required: this page is login-protected) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/auth-guard.js"></script>
+
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script src="js/auth.js"></script>
+<script>
+  const cart = window.NexoraCart;
+
+  // ---- Tab switching ----
+  document.querySelectorAll('[data-tab-link]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const tab = link.dataset.tabLink;
+      document.querySelectorAll('[data-tab-link]').forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+      document.querySelectorAll('[data-panel]').forEach(p => {
+        p.style.display = p.dataset.panel === tab ? 'block' : 'none';
+      });
+    });
+  });
+
+  function initials(name, email){
+    const src = (name && name.trim()) ? name.trim() : (email || '?');
+    return src.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+  }
+
+  function formatDate(d){
+    if(!d) return '—';
+    return d.toLocaleDateString('en-IN', { day:'numeric', month:'long', year:'numeric' });
+  }
+
+  auth.onAuthStateChanged(async (user) => {
+    if(!user) return; // auth-guard.js handles the redirect
+    const name = user.displayName || '';
+    const email = user.email || '';
+
+    document.getElementById('welcome-heading').textContent = name ? `Welcome back, ${name.split(' ')[0]}.` : 'Welcome back.';
+    document.getElementById('side-name').textContent = name || 'Your account';
+    document.getElementById('side-email').textContent = email;
+    document.getElementById('avatar-initial').textContent = initials(name, email);
+    document.getElementById('display-name').textContent = name || '—';
+    document.getElementById('display-email').textContent = email;
+    document.getElementById('display-since').textContent = user.metadata && user.metadata.creationTime
+      ? formatDate(new Date(user.metadata.creationTime)) : '—';
+    document.getElementById('edit-name').value = name;
+
+    // ---- Load orders ----
+    const ordersList = document.getElementById('orders-list');
+    try{
+      const snap = await db.collection('orders').where('uid', '==', user.uid).get();
+      const orders = [];
+      snap.forEach(doc => orders.push({ id: doc.id, ...doc.data() }));
+      orders.sort((a, b) => {
+        const ta = a.createdAt && a.createdAt.toDate ? a.createdAt.toDate().getTime() : 0;
+        const tb = b.createdAt && b.createdAt.toDate ? b.createdAt.toDate().getTime() : 0;
+        return tb - ta;
+      });
+
+      if(!orders.length){
+        ordersList.innerHTML = `<p style="padding:20px 0;">No orders yet. <a href="builder.html" style="color:var(--pink-text);">Start building your site →</a></p>`;
+      } else {
+        ordersList.innerHTML = orders.map(o => {
+          const site = o.siteType ? o.siteType.name : 'Custom order';
+          const featCount = (o.features || []).length;
+          const total = o.totals ? cart.formatINR(o.totals.subtotal) : '—';
+          const advance = o.totals ? cart.formatINR(o.totals.advance) : '—';
+          const status = o.status === 'advance_paid' ? 'paid' : 'pending';
+          const statusLabel = o.status === 'advance_paid' ? 'Advance paid' : 'Pending payment';
+          const date = o.createdAt && o.createdAt.toDate ? formatDate(o.createdAt.toDate()) : '';
+          return `
+            <div class="order-row">
+              <div>
+                <div style="font-weight:600;">${site}${featCount ? ` + ${featCount} feature${featCount > 1 ? 's' : ''}` : ''}</div>
+                <div class="order-meta">${date} · Total ${total} · Advance ${advance}</div>
+              </div>
+              <span class="order-status ${status}">${statusLabel}</span>
+            </div>
+          `;
+        }).join('');
+      }
+    }catch(err){
+      ordersList.innerHTML = `<p style="padding:20px 0; color:var(--red);">Couldn't load your orders right now.</p>`;
+      console.warn('Order fetch error:', err.message);
+    }
+  });
+
+  // ---- Edit name ----
+  document.getElementById('form-edit-name').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const msg = document.getElementById('profile-msg');
+    const newName = document.getElementById('edit-name').value.trim();
+    try{
+      const user = auth.currentUser;
+      await user.updateProfile({ displayName: newName });
+      await db.collection('users').doc(user.uid).set({ name: newName }, { merge:true });
+      document.getElementById('side-name').textContent = newName;
+      document.getElementById('display-name').textContent = newName;
+      document.getElementById('avatar-initial').textContent = initials(newName, user.email);
+      msg.textContent = 'Saved.';
+      msg.className = 'form-msg show success';
+    }catch(err){
+      msg.textContent = 'Could not save changes — try again.';
+      msg.className = 'form-msg show error';
+    }
+  });
+
+  // ---- Password reset ----
+  document.getElementById('reset-password-btn').addEventListener('click', async () => {
+    const msg = document.getElementById('security-msg');
+    try{
+      await auth.sendPasswordResetEmail(auth.currentUser.email);
+      msg.textContent = 'Password reset email sent — check your inbox.';
+      msg.className = 'form-msg show success';
+    }catch(err){
+      msg.textContent = 'Could not send reset email — try again.';
+      msg.className = 'form-msg show error';
+    }
+  });
+
+  // ---- Logout ----
+  document.getElementById('logout-btn').addEventListener('click', async () => {
+    await auth.signOut();
+    location.href = 'login.html';
+  });
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
