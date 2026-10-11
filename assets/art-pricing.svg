@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 340" fill="none"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8a3324"/><stop offset=".5" stop-color="#c9a227"/><stop offset="1" stop-color="#1f6b4a"/></linearGradient></defs><style>@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}.bob{animation:bob 4s ease-in-out infinite}</style><ellipse cx="200" cy="322" rx="140" ry="10" fill="#262019" opacity=".08"/>
+<rect x="30" y="30" width="340" height="270" rx="18" fill="#fffdf9" stroke="#262019" stroke-opacity=".14" stroke-width="2"/>
+<path d="M30 48a18 18 0 0 1 18-18h304a18 18 0 0 1 18 18v22H30z" fill="#f2ece1"/>
+<circle cx="54" cy="50" r="5" fill="#8a3324"/><circle cx="72" cy="50" r="5" fill="#c9a227"/><circle cx="90" cy="50" r="5" fill="#1f6b4a"/>
+<rect x="120" y="42" width="190" height="16" rx="8" fill="#fffdf9"/>
+<rect x="52" y="90" width="296" height="80" rx="12" fill="url(#g)"/>
+<rect x="72" y="108" width="120" height="12" rx="6" fill="#faf7f2"/>
+<rect x="72" y="130" width="80" height="8" rx="4" fill="#faf7f2" opacity=".7"/>
+<rect x="72" y="146" width="56" height="14" rx="7" fill="#262019"/>
+<g stroke="#262019" stroke-opacity=".12" stroke-width="2" fill="#fffdf9">
+<rect x="52" y="188" width="92" height="92" rx="12"/><rect x="154" y="188" width="92" height="92" rx="12"/><rect x="256" y="188" width="92" height="92" rx="12"/></g>
+<circle cx="76" cy="212" r="10" fill="#8a3324" opacity=".85"/><circle cx="178" cy="212" r="10" fill="#c9a227"/><circle cx="280" cy="212" r="10" fill="#1f6b4a" opacity=".9"/>
+<g fill="#262019" opacity=".18"><rect x="66" y="236" width="64" height="8" rx="4"/><rect x="168" y="236" width="64" height="8" rx="4"/><rect x="270" y="236" width="64" height="8" rx="4"/><rect x="66" y="252" width="40" height="8" rx="4"/><rect x="168" y="252" width="40" height="8" rx="4"/><rect x="270" y="252" width="40" height="8" rx="4"/></g>
+<g class="bob"><circle cx="352" cy="62" r="30" fill="#262019"/><text x="352" y="73" text-anchor="middle" font-family="Georgia,serif" font-size="30" font-weight="700" fill="#c9a227">&#8377;</text></g>
+</svg>
